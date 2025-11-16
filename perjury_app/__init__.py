@@ -1,3 +1,3 @@
-from .views import create_perjury_blueprint, create_app
+from .app import create_app, create_perjury_blueprint, init_perjury
 
-__all__ = ["create_perjury_blueprint", "create_app"]
+__all__ = ["create_app", "create_perjury_blueprint", "init_perjury"]

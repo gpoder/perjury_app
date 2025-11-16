@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ t('image_view_viewing_image') }}</title>
+  <style>{{ t('image_view_body_background_111_color_fff_text_align_center_font_family_sans_serif_padding_2em_img_max_width_100_border_radius_6px_box_shadow_0_2px_10px_rgba_0_0_0_4_margin_top_20px_hidden_display_none') }}</style>
+</head>
+<body>
+  <h1>Image will show for {{ display_seconds }} seconds</h1>
+  <div id="imgwrap"><img src="{{ image_url }}" alt=""></div>
+  <p id="msg" class="hidden">{{ t('image_view_image_expired_access_is_now_blocked') }}</p>
+  <script>{{ t('image_view_settimeout_function_document_getelementbyid_imgwrap_innerhtml') }}<div style="padding:2em;background:#222;border-radius:6px;">{{ t('image_view_image_hidden') }}</div>';
+      document.getElementById('msg').classList.remove('hidden');
+    }, {{ display_ms }});
+  </script>
+</body>
+</html>

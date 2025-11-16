@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ t('admin_admin_panel') }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+  <h1>{{ t('admin_perjury_admin') }}</h1>
+  <p>Client IP: {{ ip }}</p>
+
+  <div class="section">
+    <h2>{{ t('admin_settings') }}</h2>
+    <form method="post" action="{{ url_for('control.admin_index') }}?key={{ settings.ADMIN_KEY }}">
+      <label>{{ t('admin_pin') }}<input type="password" name="PIN" value="{{ settings.PIN }}">
+      </label>
+      <label>{{ t('admin_debug_key') }}<input type="text" name="DEBUG_KEY" value="{{ settings.DEBUG_KEY }}">
+      </label>
+      <label>{{ t('admin_shutdown_key') }}<input type="text" name="SHUTDOWN_KEY" value="{{ settings.SHUTDOWN_KEY }}">
+      </label>
+      <label>{{ t('admin_admin_key') }}<input type="text" name="ADMIN_KEY" value="{{ settings.ADMIN_KEY }}">
+      </label>
+      <label>{{ t('admin_display_ms_ms') }}<input type="number" name="DISPLAY_MS" value="{{ settings.DISPLAY_MS }}">
+      </label>
+      <label>{{ t('admin_token_ttl_sec') }}<input type="number" name="TOKEN_TTL" value="{{ settings.TOKEN_TTL }}">
+      </label>
+      <label>{{ t('admin_temp_block_seconds_sec') }}<input type="number" name="TEMP_BLOCK_SECONDS" value="{{ settings.TEMP_BLOCK_SECONDS }}">
+      </label>
+      <label>{{ t('admin_lock_mode') }}<select name="LOCK_MODE">
+          <option value="single_ip" {% if settings.LOCK_MODE == 'single_ip' %}selected{% endif %}>{{ t('admin_single_ip') }}</option>
+          <option value="all_ip" {% if settings.LOCK_MODE == 'all_ip' %}selected{% endif %}>{{ t('admin_all_ip') }}</option>
+        </select>
+      </label>
+      <p>{{ t('admin_global_block_until') }}<span class="code">{{ global_until }}</span></p>
+      <button type="submit">{{ t('admin_save_settings') }}</button>
+      <a href="{{ url_for('control.admin_clear_log') }}?key={{ settings.ADMIN_KEY }}">{{ t('admin_clear_log') }}</a>
+      <a href="{{ url_for('control.admin_clear_global_route') }}?key={{ settings.ADMIN_KEY }}">{{ t('admin_clear_global_block') }}</a>
+    </form>
+  </div>
+
+  <div class="section">
+    <h2>{{ t('admin_blocked_ips') }}</h2>
+    {% if blocked %}
+      <table>
+        <tr><th>{{ t('admin_ip') }}</th><th>{{ t('admin_permanent') }}</th><th>{{ t('admin_first_seen') }}</th><th>{{ t('admin_actions') }}</th></tr>
+        {% for b in blocked %}
+          <tr>
+            <td class="code">{{ b.ip }}</td>
+            <td>{{ 'yes' if b.permanent else 'no' }}</td>
+            <td>
+              {% if b.first_seen %}
+                {{ b.first_seen|timestamp }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ url_for('control.admin_delete_block') }}?key={{ settings.ADMIN_KEY }}&ip={{ b.ip }}">{{ t('admin_delete') }}</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>{{ t('admin_no_blocked_ips') }}</p>
+    {% endif %}
+  </div>
+
+  <div class="section">
+    <h2>{{ t('admin_recent_log_latest_100') }}</h2>
+    {% if logs %}
+      <table>
+        <tr><th>{{ t('admin_time') }}</th><th>{{ t('admin_event') }}</th><th>{{ t('admin_ip') }}</th><th>{{ t('admin_extra') }}</th></tr>
+        {% for e in logs %}
+          <tr>
+            <td class="code">{{ e.ts }}</td>
+            <td class="code">{{ e.event }}</td>
+            <td class="code">{{ e.ip }}</td>
+            <td class="code">{{ e.extra }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>{{ t('admin_no_log_entries') }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>
