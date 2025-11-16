@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Temporarily Locked</title>
+  <link rel="stylesheet" href="{{ url_for('perjury.static', filename='perjury.css') }}">
+</head>
+<body>
+  <h1>Temporarily Locked</h1>
+  <p>The system is currently in a temporary lockout period for security reasons.</p>
+  {% if until %}
+    <p>Lockout ends at: {{ until }} (UTC)</p>
+  {% endif %}
+</body>
+</html>
