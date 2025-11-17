@@ -4,7 +4,7 @@ set -e
 echo "=== AppHost Perjury Integration ==="
 
 # Source location (your cloned repo)
-SRC="$HOME/perjury_app"
+SRC="$PWD"
 
 # Target in AppHost
 DST="/opt/apphost/app/native/perjury"
