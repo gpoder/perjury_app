@@ -9,9 +9,12 @@
   <h1>Image will show for {{ display_seconds }} seconds</h1>
   <div id="imgwrap"><img src="{{ image_url }}" alt=""></div>
   <p id="msg" class="hidden">{{ t('image_view_image_expired_access_is_now_blocked') }}</p>
-  <script>{{ t('image_view_settimeout_function_document_getelementbyid_imgwrap_innerhtml') }}<div style="padding:2em;background:#222;border-radius:6px;">{{ t('image_view_image_hidden') }}</div>';
+  <script>
+  setTimeout(function() {
+      document.getElementById('imgwrap').innerHTML =
+        '<div style="padding:2em;background:#222;border-radius:6px;">{{ t('image_view_image_hidden') }}</div>';
       document.getElementById('msg').classList.remove('hidden');
-    }, {{ display_ms }});
+  }, {{ display_ms }});
   </script>
 </body>
 </html>
